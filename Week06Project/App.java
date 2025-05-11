@@ -1,57 +1,48 @@
 package Week06Project;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class App{
-	private static Map<String, List<Card>> createGame(int numOfPlayers) {
-		Map<String, List<Card>> finalGameMap = new HashMap<>();
+	public static void main(String[] args) {
+		
+	
+		Player p1 = new Player();
+		Player p2 = new Player();
 		Deck deck = new Deck();
 		deck.shuffle();
-		System.out.println("Deck has " + deck.getCards().size() + " cards!");
-		for (int i = 1; i <= numOfPlayers; i++) {
-			List<Card> playerList = new ArrayList<>();
-			String playerName = "Player " + i;
-			finalGameMap.put(playerName, playerList);
+		
+		for (int i = 0; i < 26; i++) {
+			p1.getHand().add(deck.draw());
+			p2.getHand().add(deck.draw());
 		}
-		for (int i = 0; i < 52/numOfPlayers; i++) {
-			for (int j = 1; j <= numOfPlayers; j++) {
-				String playerName = "Player " + j;
-				List<Card> playerList = finalGameMap.get(playerName);
-				playerList.add(deck.draw());
-				finalGameMap.replace(playerName, playerList);			
+		for (int i = 0; i < 26; i++) {
+			System.out.println("Round " + (i+1));
+			Card p1Draw = p1.flip();
+			System.out.print("Player One card is: ");
+			p1Draw.describe();
+			Card p2Draw = p2.flip();
+			System.out.print("Player Two card is: ");
+			p2Draw.describe();
+			if(p1Draw.getValue() > p2Draw.getValue()) {
+				p1.increment();
+				System.out.println("Player One wins this round");
+			} else if(p1Draw.getValue() < p2Draw.getValue()) {
+				p2.increment();
+				System.out.println("Player Two wins this round");
+			} else {
+				System.out.println("Tie");
 			}
-		}
-		if (52 % numOfPlayers != 0) {
-			System.out.print("With " + numOfPlayers + " players -- ");
-			System.out.println("Cards left in deck: " + 52%numOfPlayers); 
+			System.out.println("Player One Score: " + p1.getScore());
+			System.out.println("Player Two Score: " + p2.getScore());
+			System.out.println();
+			}//end of gameplay
+		if(p1.getScore() > p2.getScore()) {
+			System.out.println("Player One wins the War");
+		} else if(p1.getScore() < p2.getScore()) {
+			System.out.println("Player Two Wins the War");
 		} else {
-			System.out.println("All cards have been dealt");
+			System.out.println("Nobody Wins in War");
 		}
-}
- class Card{
-	 Card tempCard = new Card("Two", "Hearts", 2);
-	 tempCard.describe();
-
-}
-
-class Deck{
-	deck.shuffle();
-	deck.describe();
-}
-
-class Players{
-	int numOfPlayers = 2;
-	for (int i = 1; i <= numOfPlayers; i++) {
-		String playerName = "Player " + i;
-		System.out.println(playerName + "\n--------");
-		List<Card> playerList = gameBoard.get(playerName);
-		for (Card handCard : playerList) {
-			handCard.describe();
-			}	
-		}
-	}
-}
+		
+	}//end of main		
+}	// end of class	
